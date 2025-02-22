@@ -6,6 +6,8 @@ void main() {
 }
 
 class RecipeBookApp extends StatelessWidget {
+  const RecipeBookApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
