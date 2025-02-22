@@ -50,10 +50,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _toggleFavorite,
-              child: Text(_isFavorite ? 'Unfavorite' : 'Add to Favorites'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: _isFavorite ? Colors.red : Colors.green,
               ),
+              child: Text(_isFavorite ? 'Unfavorite' : 'Add to Favorites'),
             ),
           ],
         ),

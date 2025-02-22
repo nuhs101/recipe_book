@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'details_screen.dart';
+import 'favorites_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final List<Map<String, String>> recipes = [
     {
       'name': 'Alfredo',
@@ -20,27 +28,62 @@ class HomeScreen extends StatelessWidget {
     },
   ];
 
-  HomeScreen({super.key});
+  List<Map<String, String>> favoriteRecipes = [];
+
+  void toggleFavorite(Map<String, String> recipe) {
+    setState(() {
+      if (favoriteRecipes.contains(recipe)) {
+        favoriteRecipes.remove(recipe);
+      } else {
+        favoriteRecipes.add(recipe);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Recipe Book')),
-      body: ListView.builder(
-        itemCount: recipes.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(recipes[index]['name']!),
-            onTap: () {
+      body: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => DetailsScreen(recipe: recipes[index]),
+                  builder:
+                      (context) => FavoritesScreen(favorites: favoriteRecipes),
                 ),
               );
             },
-          );
-        },
+            child: Text('View Favorites'),
+          ),
+          Expanded(
+            child: ListView.builder(
+              itemCount: recipes.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(recipes[index]['name']!),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => DetailsScreen(
+                              recipe: recipes[index],
+                              onFavoriteToggle: toggleFavorite,
+                              isFavorite: favoriteRecipes.contains(
+                                recipes[index],
+                              ),
+                            ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
